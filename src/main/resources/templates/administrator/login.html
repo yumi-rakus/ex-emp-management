@@ -39,9 +39,7 @@
 						<fieldset>
 							<legend>ログイン</legend>
 							<div class="form-group">
-								<div class="alert alert-danger">
-									<p>メールアドレスまたはパスワードが間違っています</p>
-								</div>
+								<span th:text="${result}" style="color:red">メールアドレスまたはパスワードが不正です。</span>
 							</div>
 							<div class="form-group">
 								<label for="mailAddress">メールアドレス:</label> <input type="text"
