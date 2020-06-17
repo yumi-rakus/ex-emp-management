@@ -61,4 +61,23 @@ public class EmployeeController {
 
 		return "employee/detail";
 	}
+
+	/**
+	 * 従業員詳細（扶養人数のみ）を更新する。
+	 * 
+	 * @param form 従業員詳細ページから受け取った値が格納されているフォームオブジェクト
+	 * @return 「/employee/showList」にリダイレクト
+	 */
+	@RequestMapping("/update")
+	public String update(UpdateEmployeeForm form) {
+
+		Employee employee = new Employee();
+
+		employee.setId(Integer.parseInt(form.getId()));
+		employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
+
+		employeeService.update(employee);
+
+		return "redirect:/employee/showList";
+	}
 }
