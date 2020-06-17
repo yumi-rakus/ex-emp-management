@@ -1,24 +1,23 @@
 package jp.co.sample.form;
 
 public class InsertAdministratorForm {
-	
+
 	/**
 	 * 名前
 	 */
 	private String name;
-	
+
 	/**
 	 * メールアドレス
 	 */
 	private String mailAddress;
-	
+
 	/**
 	 * パスワード
 	 */
 	private String password;
-	
-	
-	//getter setter
+
+	// getter setter
 	public String getName() {
 		return name;
 	}
@@ -42,15 +41,12 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	//toString
+
+	// toString
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
 				+ "]";
 	}
-	
-	
 
 }
