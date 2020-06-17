@@ -16,6 +16,7 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
+	
 	/**
 	 * 従業員情報を全件取得する
 	 * 
