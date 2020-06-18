@@ -102,4 +102,42 @@ public class EmployeeRepository {
 		template.update(updateSql, param);
 	}
 
+	
+	/**
+	 * 従業員を10件取得する
+	 * 
+	 * @param offsetNum OFFSET数
+	 * @return 10件の従業員情報
+	 */
+	public List<Employee> findTen(Integer offsetNum) {
+
+		String sql = "SELECT * FROM employees ORDER BY hire_date LIMIT 10 OFFSET :offsetNum";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("offsetNum", offsetNum);
+
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+
+		if (employeeList.size() == 0) {
+			return Collections.emptyList();
+		} else {
+			return employeeList;
+		}
+	}
+	
+	/**
+	 * 従業員数を取得する
+	 * 
+	 * @return 従業員数
+	 */
+	public Integer count() {
+
+		String sql = "SELECT count(*) FROM employees";
+
+		SqlParameterSource param = new MapSqlParameterSource();
+
+		Integer count = template.queryForObject(sql, param, Integer.class);
+
+		return count;
+	}
+
 }
