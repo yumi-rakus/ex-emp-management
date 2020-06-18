@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -53,11 +55,24 @@ public class EmployeeController {
 	 * @return employee/detail.html
 	 */
 	@RequestMapping("/showDetail")
-	public String showDetail(String id, Model model) {
+	public String showDetail(String id, Model model, UpdateEmployeeForm form) {
 
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
 
-		model.addAttribute("employee", employee);
+		form.setId(Integer.toString(employee.getId()));
+		form.setName(employee.getName());
+		form.setImage(employee.getImage());
+		form.setGender(employee.getGender());
+		form.setHireDate(employee.getHireDate());
+		form.setMailAddress(employee.getMailAddress());
+		form.setZipCode(employee.getZipCode());
+		form.setAddress(employee.getAddress());
+		form.setTelephone(employee.getTelephone());
+		form.setSalary(Integer.toString(employee.getSalary()));
+		form.setCharacteristics(employee.getCharacteristics());
+		form.setDependentsCount(Integer.toString(employee.getDependentsCount()));
+
+		model.addAttribute("updateEmployeeForm", form);
 
 		return "employee/detail";
 	}
@@ -69,7 +84,26 @@ public class EmployeeController {
 	 * @return 「/employee/showList」にリダイレクト
 	 */
 	@RequestMapping("/update")
-	public String update(UpdateEmployeeForm form) {
+	public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
+
+			form.setName(employee.getName());
+			form.setImage(employee.getImage());
+			form.setGender(employee.getGender());
+			form.setHireDate(employee.getHireDate());
+			form.setMailAddress(employee.getMailAddress());
+			form.setZipCode(employee.getZipCode());
+			form.setAddress(employee.getAddress());
+			form.setTelephone(employee.getTelephone());
+			form.setSalary(Integer.toString(employee.getSalary()));
+			form.setCharacteristics(employee.getCharacteristics());
+
+			model.addAttribute("updateEmployeeForm", form);
+
+			return "employee/detail";
+		}
 
 		Employee employee = new Employee();
 
