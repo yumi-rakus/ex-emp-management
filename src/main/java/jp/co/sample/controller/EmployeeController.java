@@ -1,5 +1,6 @@
 package jp.co.sample.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,11 @@ public class EmployeeController {
 		form.setName(employee.getName());
 		form.setImage(employee.getImage());
 		form.setGender(employee.getGender());
-		form.setHireDate(employee.getHireDate());
+
+		form.setHireYear(Integer.toString(employee.getHireDate().getYear()));
+		form.setHireMonth(Integer.toString(employee.getHireDate().getMonthValue()));
+		form.setHireDay(Integer.toString(employee.getHireDate().getDayOfMonth()));
+
 		form.setMailAddress(employee.getMailAddress());
 		form.setZipCode(employee.getZipCode());
 		form.setAddress(employee.getAddress());
@@ -87,20 +92,6 @@ public class EmployeeController {
 	public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
-			Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
-
-			form.setName(employee.getName());
-			form.setImage(employee.getImage());
-			form.setGender(employee.getGender());
-			form.setHireDate(employee.getHireDate());
-			form.setMailAddress(employee.getMailAddress());
-			form.setZipCode(employee.getZipCode());
-			form.setAddress(employee.getAddress());
-			form.setTelephone(employee.getTelephone());
-			form.setSalary(Integer.toString(employee.getSalary()));
-			form.setCharacteristics(employee.getCharacteristics());
-
-			model.addAttribute("updateEmployeeForm", form);
 
 			return "employee/detail";
 		}
@@ -108,6 +99,17 @@ public class EmployeeController {
 		Employee employee = new Employee();
 
 		employee.setId(Integer.parseInt(form.getId()));
+		employee.setName(form.getName());
+		employee.setImage(form.getImage());
+		employee.setGender(form.getGender());
+		employee.setHireDate(LocalDate.of(Integer.parseInt(form.getHireYear()), Integer.parseInt(form.getHireMonth()),
+				Integer.parseInt(form.getHireDay())));
+		employee.setMailAddress(form.getMailAddress());
+		employee.setZipCode(form.getZipCode());
+		employee.setAddress(form.getAddress());
+		employee.setTelephone(form.getTelephone());
+		employee.setSalary(Integer.parseInt(form.getSalary()));
+		employee.setCharacteristics(form.getCharacteristics());
 		employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
 
 		employeeService.update(employee);
