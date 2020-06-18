@@ -5,16 +5,27 @@ import javax.validation.constraints.NotBlank;
 
 public class UpdateAdministratorForm {
 	
-	
+	/**
+	 * ID
+	 */
 	private String id;
 	
+	/**
+	 * 名前
+	 */
 	@NotBlank(message = "名前を入力してください")
 	private String name;
 	
+	/**
+	 * メールアドレス
+	 */
 	@NotBlank(message="メールアドレスを入力してください")
 	@Email(message="Emailの形式が不正です")
 	private String mailAddress;
 	
+	/**
+	 * パスワード
+	 */
 	@NotBlank(message = "パスワードを入力してください")
 	private String password;
 	
