@@ -1,5 +1,7 @@
 package jp.co.sample.controller;
 
+import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.domain.Administrator;
 import jp.co.sample.form.InsertAdministratorForm;
 import jp.co.sample.form.LoginForm;
+import jp.co.sample.form.UpdateAdministratorForm;
 import jp.co.sample.service.AdministratorService;
 
 @Controller
@@ -45,6 +48,11 @@ public class AdministratorController {
 		return new LoginForm();
 	}
 
+	@ModelAttribute
+	public UpdateAdministratorForm setUpUpdateAdministratorForm() {
+		return new UpdateAdministratorForm();
+	}
+
 	/**
 	 * administrator/insert.htmlにフォワードする。
 	 * 
@@ -63,11 +71,11 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			return toInsert();
 		}
-		
+
 		Administrator administrator = new Administrator();
 
 		administrator.setName(form.getName());
@@ -99,6 +107,7 @@ public class AdministratorController {
 			return toLogin();
 		} else {
 			session.setAttribute("administratorName", administrator.getName());
+			session.setAttribute("administratorId", administrator.getId());
 			return "forward:/employee/showList";
 		}
 	}
@@ -114,6 +123,47 @@ public class AdministratorController {
 		session.invalidate();
 
 		return "redirect:/";
+	}
+
+	@RequestMapping("/showDetail")
+	public String showDetail(Model model, UpdateAdministratorForm form) {
+
+		if (Objects.isNull(administratorService.showDetail((Integer) session.getAttribute("administratorId")))) {
+			return toLogin();
+		}
+
+		Administrator administrator = administratorService
+				.showDetail((Integer) session.getAttribute("administratorId"));
+
+		form.setId(Integer.toString(administrator.getId()));
+		form.setName(administrator.getName());
+		form.setMailAddress(administrator.getMailAddress());
+		form.setPassword(administrator.getPassword());
+
+		model.addAttribute("updateAdministratorForm", form);
+
+		return "administrator/detail";
+	}
+
+	@RequestMapping("/update")
+	public String update(@Validated UpdateAdministratorForm form, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return "administrator/detail";
+		}
+
+		Administrator administrator = new Administrator();
+
+		administrator.setId(Integer.parseInt(form.getId()));
+		administrator.setName(form.getName());
+		administrator.setMailAddress(form.getMailAddress());
+		administrator.setPassword(form.getPassword());
+
+		session.setAttribute("administratorName", form.getName());
+
+		administratorService.update(administrator);
+
+		return "redirect:/employee/showList";
 	}
 
 }
