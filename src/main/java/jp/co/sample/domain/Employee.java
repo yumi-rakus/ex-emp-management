@@ -1,6 +1,7 @@
 package jp.co.sample.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Employee {
 
@@ -33,7 +34,7 @@ public class Employee {
 	/**
 	 * 入社日
 	 */
-	private java.util.Date hireDate;
+	private LocalDate hireDate;
 
 	/**
 	 * メールアドレス
@@ -71,7 +72,7 @@ public class Employee {
 	private Integer dependentsCount;
 
 	// Constructor
-	public Employee(Integer id, String name, String image, String gender, Date hireDate, String mailAddress,
+	public Employee(Integer id, String name, String image, String gender, LocalDate hireDate, String mailAddress,
 			String zipCode, String address, String telephone, Integer salary, String characteristics,
 			Integer dependentsCount) {
 		super();
@@ -125,11 +126,11 @@ public class Employee {
 		this.gender = gender;
 	}
 
-	public java.util.Date getHireDate() {
+	public LocalDate getHireDate() {
 		return hireDate;
 	}
 
-	public void setHireDate(java.util.Date hireDate) {
+	public void setHireDate(LocalDate hireDate) {
 		this.hireDate = hireDate;
 	}
 
