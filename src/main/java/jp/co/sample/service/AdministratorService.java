@@ -33,5 +33,13 @@ public class AdministratorService {
 	public Administrator login(String mailAddress, String password) {
 		return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
 	}
+	
+	public void update(Administrator administrator) {
+		administratorRepository.update(administrator);
+	}
+	
+	public Administrator showDetail(Integer id) {
+		return administratorRepository.load(id);
+	}
 
 }
