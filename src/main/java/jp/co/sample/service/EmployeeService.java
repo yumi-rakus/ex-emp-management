@@ -16,7 +16,6 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
-	
 	/**
 	 * 従業員情報を全件取得する
 	 * 
@@ -43,6 +42,25 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+	/**
+	 * 従業員を10件取得する
+	 * 
+	 * @param offsetNum OFFSET数
+	 * @return 10件の従業員情報
+	 */
+	public List<Employee> showTenList(Integer offsetNum) {
+		return employeeRepository.findTen(offsetNum);
+	}
+
+	/**
+	 * 従業員数を取得する
+	 * 
+	 * @return 従業員数
+	 */
+	public Integer employeeCount() {
+		return employeeRepository.count();
 	}
 
 }
