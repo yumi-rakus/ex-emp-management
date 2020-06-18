@@ -71,5 +71,37 @@ public class AdministratorRepository {
 			return administrator;
 		}
 	}
+	
+	/**
+	 * 管理者情報を更新する。
+	 * 
+	 * @param administrator　更新する管理者情報
+	 */
+	public void update(Administrator administrator) {
+		
+		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
+		
+		String updateSql = "UPDATE administrators SET name = :name, mail_address = :mailAddress, password = :password WHERE id = :id";
+		
+		template.update(updateSql, param);
+		
+	}
+	
+	public Administrator load(Integer id) {
+		
+		String sql = "SELECT * FROM administrators WHERE id = :id";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		
+		List<Administrator> adminList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
+
+		if (adminList.size() == 0) {
+			return null;
+		} else {
+			Administrator administrator = adminList.get(0);
+			return administrator;
+		}
+	
+	}
 
 }
