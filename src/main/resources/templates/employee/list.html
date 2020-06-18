@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div class="container">
-	<span th:include="/fragment/fragment-part::nav-header"></span>
+		<span th:include="/fragment/fragment-part::nav-header"></span>
 
 		<!-- パンくずリスト -->
 		<ol class="breadcrumb">
@@ -42,15 +42,19 @@
 					</thead>
 					<tbody>
 						<tr th:each="employee : ${employeeList}">
-							<td><a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}"> <span th:text="${employee.name}">山田太郎</span>
+							<td><a href="detail.html"
+								th:href="@{'/employee/showDetail?id=' + ${employee.id}}"> <span
+									th:text="${employee.name}">山田太郎</span>
 							</a></td>
 							<td><span th:text="${employee.hireDate}">2016/12/1</span></td>
 							<td><span th:text="${employee.dependentsCount}">3</span>人</td>
 						</tr>
 					</tbody>
 				</table>
-
-
+				<a th:if="${session.offsetNum > 0}" th:href="@{/employee/showBack}"
+					th:text="戻る"></a> <a
+					th:if="${session.offsetNum +9 < session.employeeCount}"
+					th:href="@{/employee/showNext}" th:text="次へ"></a>
 
 				<!-- ここから下を編集する必要はありません -->
 
