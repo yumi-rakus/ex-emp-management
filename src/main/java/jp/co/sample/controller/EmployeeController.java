@@ -3,6 +3,8 @@ package jp.co.sample.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,9 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Autowired
+	private HttpSession session;
 
 	/**
 	 * UpdateEmployeeFormをインスタンス化しそのままreturnする。
@@ -41,11 +46,14 @@ public class EmployeeController {
 	@RequestMapping("/showList")
 	public String showList(Model model) {
 
-		List<Employee> employeeList = employeeService.showList();
+		List<Employee> employeeList = employeeService.showTenList(0);
+
+		session.setAttribute("offsetNum", 0);
+		session.setAttribute("employeeCount", employeeService.employeeCount());
 
 		model.addAttribute("employeeList", employeeList);
 
-		return "employee/list.html";
+		return "employee/list";
 	}
 
 	/**
@@ -115,5 +123,51 @@ public class EmployeeController {
 		employeeService.update(employee);
 
 		return "redirect:/employee/showList";
+	}
+
+	/**
+	 * 従業員一覧ページで、次のページに遷移する
+	 * 
+	 * @param model モデルオブジェクト
+	 * @return employee/list.html
+	 */
+	@RequestMapping("/showNext")
+	public String showNext(Model model) {
+
+		Integer offsetNum = (Integer) session.getAttribute("offsetNum");
+
+		offsetNum = offsetNum + 10;
+
+		List<Employee> employeeList = employeeService.showTenList(offsetNum);
+
+		model.addAttribute("employeeList", employeeList);
+
+		session.setAttribute("offsetNum", offsetNum);
+
+		session.setAttribute("offsetNum", offsetNum);
+
+		return "employee/list";
+	}
+
+	/**
+	 * 従業員一覧ページで、前のページに戻る
+	 * 
+	 * @param model モデルオブジェクト
+	 * @return employee/list.html
+	 */
+	@RequestMapping("/showBack")
+	public String showBack(Model model) {
+
+		Integer offsetNum = (Integer) session.getAttribute("offsetNum");
+
+		offsetNum = offsetNum - 10;
+
+		List<Employee> employeeList = employeeService.showTenList(offsetNum);
+
+		model.addAttribute("employeeList", employeeList);
+
+		session.setAttribute("offsetNum", offsetNum);
+
+		return "employee/list";
 	}
 }
