@@ -133,9 +133,15 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showNext")
 	public String showNext(Model model) {
-
+		
+		
+		
 		Integer offsetNum = (Integer) session.getAttribute("offsetNum");
-
+		
+		if(offsetNum==null) {
+			return "forward:/";
+		}
+		
 		offsetNum = offsetNum + 10;
 
 		List<Employee> employeeList = employeeService.showTenList(offsetNum);
@@ -159,7 +165,11 @@ public class EmployeeController {
 	public String showBack(Model model) {
 
 		Integer offsetNum = (Integer) session.getAttribute("offsetNum");
-
+		
+		if(offsetNum==null) {
+			return "forward:/";
+		}
+		
 		offsetNum = offsetNum - 10;
 
 		List<Employee> employeeList = employeeService.showTenList(offsetNum);
